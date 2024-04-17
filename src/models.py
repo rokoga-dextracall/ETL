@@ -33,10 +33,19 @@ class dim_cartera(Base):
     nombre = Column(String)
     id_cliente = Column(Integer)
     nombre_cliente = Column(String)
+    tramo = Column(String)
     fecha = Column(DateTime)
     cantidad_deudores = Column(Integer)
     total_documentos = Column(Integer)
     total_deuda = Column(Float)
+
+class dim_tiempo(Base):
+    __tablename__ = 'dim_tiempo'
+    id = Column(Integer, primary_key=True)
+    anno = Column(Integer) # 2010 en adelante
+    mes = Column(Integer) # 1 - 12
+    dia = Column(Integer) # 1 - 31
+    dia_semana = Column(Integer) # 1 - 5
 
 class fact_cliente(Base):
     __tablename__ = 'fact_cartera'
@@ -48,7 +57,8 @@ class fact_cliente(Base):
 class fact_carteras(Base):
     __tablename__ = 'fact_cartera'
     id = Column(Integer, primary_key=True)
-    id_cartera = Column(Integer, ForeignKey('dim_cartera.id'))
+    cartera = Column(Integer, ForeignKey('dim_cartera.id'))
+    tiempo = Column(Integer, ForeignKey('dim_tiempo.id'))
     cantidad_deudores_prom = Column(Float)
     cantidad_deuda_prom = Column(Float)
     total_deudores_nuevos = Column(Integer) # No han aparecido en previas carteras
@@ -58,14 +68,39 @@ class fact_carteras(Base):
 
 class fact_deudor(Base): # caracteristicas de deudores
     __tablename__ = 'fact_deudor'
-    edad_promedio = Column(Float)
-    educacion_promedio = Column(Float)
-    deuda_acumulada = Column(Float)
+    id = Column(Integer, primary_key=True)
+    cartera = Column(Integer, ForeignKey('dim_cartera.id'))
+    tiempo = Column(Integer, ForeignKey('dim_tiempo.id'))
+    
+
 
 class fact_gestion(Base): # caracteristicas de gestiones
     __tablename__ = 'fact_gestion'
+    id = Column(Integer, primary_key=True)
+    cartera = Column(Integer, ForeignKey('dim_cartera.id'))
+    tiempo = Column(Integer, ForeignKey('dim_tiempo.id'))    
     promedio_promesa = Column(Float)
+    total_promesa = Column(Float)
+    total_tipo1 = Column(Integer)
+    promedio_tipo1 = Column(Float)
+    total_tipo2 = Column(Integer)
+    promedio_tipo2 = Column(Float)
+    total_tipo3 = Column(Integer)
+    promedio_tipo3 = Column(Float)
+    total_tipo4 = Column(Integer)
+    promedio_tipo4 = Column(Float)
 
 class fact_pagos(Base): # caracteristicas de pagos
     __tablename__ = 'fact_pagos'
+    id = Column(Integer, primary_key=True)
+    cartera = Column(Integer, ForeignKey('dim_cartera.id'))
+    tiempo = Column(Integer, ForeignKey('dim_tiempo.id'))
+    promedio_pagos = Column(Float)
+    pagos_total = Column(Float)
+    total_deudores = Column(Integer)
+    total_documentos = Column(Integer)
+    promedio_deudores = Column(Integer)
+    promedio_documentos = Column(Integer)
+
+
     
