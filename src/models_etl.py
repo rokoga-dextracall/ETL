@@ -73,15 +73,26 @@ class fact_carteras(Base):
     cliente = Column(Integer, ForeignKey('dim_cliente.id'))
     cartera = Column(Integer, ForeignKey('dim_cartera.id'))
     tiempo = Column(Integer, ForeignKey('dim_tiempo.id'))
-    cantidad_deudores_prom = Column(Float)
-    cantidad_deuda_prom = Column(Float)
+    ubigeo = Column(Integer, ForeignKey('dim_ubigeo.id'))
     total_deudores_nuevos = Column(Integer) # No han aparecido en previas carteras
     total_deudores_antiguos = Column(Integer) # Sin pagar o nuevos documentos
     total_deudores = Column(Integer) # SUMA
-    promedio_deuda = Column(Float)  # + Campañas pasadas
+    cantidad_deudores_prom = Column(Float)
     deuda_total = Column(Float)
+    cantidad_deuda_prom = Column(Float)
     total_documentos = Column(Integer)
-    promedio_documentos = Column(Float) # + Campañas pasadas
+    total_promesas = Column(Integer)
+    total_pagado = Column(Float)
+    total_gestiones = Column(Integer)
+    efectividad = Column(Float) 
+    total_contacto = Column(Integer)
+    llamadas_perdidas = Column(Integer)
+    total_llamadas = Column(Integer)
+    porcentaje_contacto = Column(Integer)
+
+class fact_numeros(Base):
+    __tablename__ = 'fact_numeros'
+
     
 class fact_deudor(Base): # caracteristicas de deudores 
     __tablename__ = 'fact_deudor'
